@@ -1,0 +1,47 @@
+body {
+    font: 1.5rem 'Open Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #37373a;
+    color: white;
+    display: flex;
+    justify-content: center;
+}
+
+.area {
+    display: flex;
+    flex-direction: column;
+}
+
+.selectorArea {
+    padding: 1rem 20rem;
+    display:flex;
+    align-self: center;
+}
+
+.selectorArea select {
+    margin-left: 0.4rem;
+    font: 1.4rem 'Open Sans', sans-serif;
+}
+
+.dropZoneArea {
+    border: 1px ;
+    outline-style: dashed;
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: space-evenly;
+    max-width: 45rem;
+    height: 10rem;
+    color: #bfbfbf;
+    align-self: center;
+    width: 100%;
+}
+
+.dropZoneArea div {
+    align-self: center;
+}
+
+.outputArea {
+    margin-top: 1rem;
+}
+

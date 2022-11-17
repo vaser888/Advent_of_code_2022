@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Results for advent of code 2022</title>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="Results.css">
+</head>
+
+<body>
+  <div class="area">
+    <div class="selectorArea">
+      <div>Select day</div>
+      <select id="daySelector"></select>
+    </div>
+    <div class="dropZoneArea" id="dropZone" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" ondragleave="leave(event);">
+      <div>Drop your input here</div> 
+    </div>
+    <div class="outputArea" id="solutionOutput"></div>
+  </div>
+</body>
+
+<script>
+  window.onload = function(){
+    loadOutput();
+  }
+
+  const daySelectorInput = document.getElementById("daySelector");
+
+  daySelectorInput.addEventListener("change", loadOutput);
+    
+  for (i=1; i<26; i++){
+    // create the option selections 
+    var optionValue = document.createElement("option");
+    optionValue.value = "day" + i;
+    optionValue.innerText = i;
+    daySelectorInput.appendChild(optionValue);
+  }
+
+  function loadOutput(){
+    // loads the javescript code for the selected day from the selected file
+    var daySelectorValue = daySelectorInput.value;
+    var script = document.createElement("script");
+      script.src = "/Days/" + daySelectorValue + "/" + daySelectorValue + ".js"
+      document.head.appendChild(script);
+      console.clear();
+  }
+
+    // code modified from https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/File_drag_and_drop#prevent_the_browsers_default_drag_behavior and https://developer.mozilla.org/en-US/docs/Web/API/FileReader/FileReader
+
+  function dropHandler(ev) {
+
+  // Prevent default behavior (Prevent file from being opened)
+  ev.preventDefault();
+  
+  //grab the first file and read it's data
+  var file = ev.dataTransfer.files[0], reader = new FileReader();
+  reader.onload = (evt) => {
+    var fileContents = evt.target.result;
+    //console.log(evt.target.result);
+
+    // uses the data and inserts into the selected days' code to solve  
+    main(fileContents)
+    };
+  
+    reader.readAsText(file);
+    document.getElementById("dropZone").style.opacity = '1';
+  }
+
+  function dragOverHandler(ev) {
+    // Prevent default behavior (Prevent file from being opened)
+    ev.preventDefault();
+    document.getElementById("dropZone").style.opacity = '0.45';
+  }
+function leave(ev) {
+    ev.preventDefault();
+    document.getElementById("dropZone").style.opacity = '1';
+}
+
+</script>
+
+</html>
