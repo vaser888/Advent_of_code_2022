@@ -15,7 +15,8 @@
       <select id="daySelector"></select>
     </div>
     <div class="dropZoneArea" id="dropZone" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" ondragleave="leave(event);">
-      <div>Drop your input here</div> 
+      <div>Drop your input here</div>
+      <input id="fileSelect" type="file" onchange="fileSelectHandler(event);"> 
     </div>
     <div class="outputArea" id="solutionOutput"></div>
   </div>
@@ -23,6 +24,10 @@
 
 <script>
   window.onload = function(){
+    // load the day value for the proper days code to run. 
+    if (localStorage.getItem("dayState") != null){
+      daySelectorInput.value = localStorage.getItem("dayState");
+    }
     loadOutput();
   }
 
@@ -38,13 +43,16 @@
     daySelectorInput.appendChild(optionValue);
   }
 
+  // loads the javescript code for the selected day from the selected file
   function loadOutput(){
-    // loads the javescript code for the selected day from the selected file
     var daySelectorValue = daySelectorInput.value;
     var script = document.createElement("script");
-      script.src = "/Advent_of_code_2022/days/" + daySelectorValue + "/" + daySelectorValue + ".js"
-      document.head.appendChild(script);
-      console.clear();
+    /* to be added at the start for github to work => /Advent_of_code_2022 */
+    script.src = "/Advent_of_code_2022/days/" + daySelectorValue + "/" + daySelectorValue + ".js"
+    document.head.appendChild(script);
+    // save the selected day in local storage in order to load that days code on refresh
+    localStorage.setItem("dayState", daySelectorValue);
+    console.clear();
   }
 
     // code modified from https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/File_drag_and_drop#prevent_the_browsers_default_drag_behavior and https://developer.mozilla.org/en-US/docs/Web/API/FileReader/FileReader
@@ -56,12 +64,12 @@
   
   //grab the first file and read it's data
   var file = ev.dataTransfer.files[0], reader = new FileReader();
+  console.log(file);
   reader.onload = (evt) => {
     var fileContents = evt.target.result;
     //console.log(evt.target.result);
-
-    // uses the data and inserts into the selected days' code to solve  
-    main(fileContents)
+    // uses the data and inserts into the selected days code to solve  
+    main(fileContents);
     };
   
     reader.readAsText(file);
@@ -76,6 +84,17 @@
 function leave(ev) {
     ev.preventDefault();
     document.getElementById("dropZone").style.opacity = '1';
+}
+
+function fileSelectHandler(ev) {
+  //get selected file data and send to selected day js
+  var file = document.getElementById("fileSelect").files[0];
+  var reader = new FileReader();
+  reader.readAsText(file);
+  reader.onload = (evt) => {
+    var fileContents = evt.target.result;
+    main(fileContents);
+  };
 }
 
 </script>
