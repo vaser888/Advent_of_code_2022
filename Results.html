@@ -48,7 +48,7 @@
     var daySelectorValue = daySelectorInput.value;
     var script = document.createElement("script");
     /* to be added at the start for github to work => /Advent_of_code_2022 */
-    script.src = "/Advent_of_code_2022/days/" + daySelectorValue + "/" + daySelectorValue + ".js"
+    script.src = "/days/" + daySelectorValue + "/" + daySelectorValue + ".js"
     document.head.appendChild(script);
     // save the selected day in local storage in order to load that days code on refresh
     localStorage.setItem("dayState", daySelectorValue);

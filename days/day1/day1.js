@@ -6,6 +6,53 @@ fetch('/Advent_of_code_2022/days/day1/data.txt') // get the data from text file.
 })
 
 function main(data){
-    console.log(data);
-    document.getElementById("solutionOutput").innerText= "Part 1: " + data + "\n Part 2: " + data;
+    //console.log(data);
+
+    function separateLinesToArrayOfStings(data) {
+      let lines = data.split("\r\n");
+      return lines;
+    }
+
+    function makeArrayOfElves(separatedLines) {
+      let elves = [];
+      let calories = 0;
+      
+      for (var i = 0; i < separatedLines.length; i++){
+
+        if (separatedLines[i] === ""){
+          elves.push(calories);
+          calories = 0
+        }
+        else{
+          valueInPack = parseInt(separatedLines[i]);
+          calories = calories + valueInPack;
+        }
+
+      }
+
+      return elves;
+
+    }
+
+    function findTopThreeElfsCalorieTotals(elfListInput){
+      var sortedArray = elfListInput.sort((a,b)=> a - b);
+      sortedArray = sortedArray.reverse();
+      let topThreeElves = 0;
+
+      for (i = 0; i < 3; i++){
+        topThreeElves = topThreeElves + parseInt(sortedArray[i])
+      }
+
+      return topThreeElves;
+      
+    }
+
+    var lines = separateLinesToArrayOfStings(data);
+    var elfList = makeArrayOfElves(lines);
+    
+    var elfWithMostCalories = Math.max(...elfList); //part 1 answer
+    var topThree = findTopThreeElfsCalorieTotals(elfList); //part 2 answer
+
+
+    document.getElementById("solutionOutput").innerText= "Part 1: " + elfWithMostCalories + "\n Part 2: "+ topThree ;
 }
