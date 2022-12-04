@@ -8,5 +8,10 @@ fetch('/days/day4/data.txt') // get the data from text file.
 function main(data){
     console.log(data);
 
+    function separateLines(textFile) {
+      let lineArray = data.split("\r\n");
+      return lineArray;
+    }
+
     document.getElementById("solutionOutput").innerText= "Part 1: " + "\nPart 2: ";
 }
