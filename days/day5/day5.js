@@ -12,6 +12,7 @@ function main(data){
       let lineArray = textFile.split("\r\n");
       return lineArray;
     }
+
     function splitArray(array, splitString) {
       let splitGroup = [];
       for (i = 0; i < array.length; i++){
@@ -19,6 +20,7 @@ function main(data){
       }
       return splitGroup;
     }
+
     function separateStartStackFromInstructions(array){
       let startStackArray = [];
       let moveInstructions = [];
@@ -34,7 +36,8 @@ function main(data){
           }
         }
         else{
-          moveInstructions.push(array[i]);
+          let temp = array[i].join("");
+          moveInstructions.push(temp);
         }
       }
       packagedOutput.push(startStackArray);
@@ -45,8 +48,7 @@ function main(data){
     function makeUsableStartStackArray(array){
 
       array.reverse();
-      let numberOfColumns = array[0][(array[0].length-2)]
-      console.log(numberOfColumns)
+      let numberOfColumns = array[0][(array[0].length-2)];
       array.reverse();
       array.pop(); // get rid of number row;
       array.reverse();
@@ -56,22 +58,65 @@ function main(data){
       for (i = 0; i < array.length; i++){
         for (y = 0; y < numberOfColumns; y++){
           tempArray.push(array[i][1+y*4]);
+        } 
+      }
+      
+      let completeArray = Array.from(Array(parseInt(numberOfColumns)), () => new Array());
+
+      let tempArrayLength = tempArray.length;
+
+      for (i = 0; i < tempArrayLength; i++){
+        if( tempArray[i] === " "){
+          //do nothing
+        }
+        else{
+          let orderNumber =  i % numberOfColumns;
+          completeArray[orderNumber].push(tempArray[i]);
         }
       }
-      console.log(tempArray)
-      
-      for (i = 0; i < tempArray.length/numberOfColumns; i++){
-        //console.log(i)
-      }
-
-      
-      console.log(array)
+      return completeArray;
     }
+
+    function makeInstructionsArray(array){
+
+      let instructionArray = [];
+
+      for (i = 0; i < array.length; i++){
+        let str = array[i];
+        str = str.replace("move ", "");
+        str = str.replace(" from", "");
+        str = str.replace("to ", "");
+        instructionArray.push(str.split(" "));
+
+      }
+      return instructionArray;
+    }
+
+    function partOne(startStack, instructionList) {
+
+      for (i = 0; i <instructionList.length; i++){
+        for (m = 0; m < instructionList[i][0]; m++){
+          let from = instructionList[i][1] - 1;
+          let to = instructionList[i][2] - 1;
+          let temp = startStack[from].pop();
+          startStack[to].push(temp);
+        }
+      }
+      var finalString = "";
+      for (i = 0; i < startStack.length; i++){
+        let letter = startStack[i].pop();
+        finalString = finalString + letter;
+      }
+      return finalString;
+    }
+
 
     let array1 = separateLines(data);
     let array2 = splitArray(array1, "")
     let array3  = separateStartStackFromInstructions(array2);
     let array4 = makeUsableStartStackArray(array3[0]);
-    //console.log(array3)
-    document.getElementById("solutionOutput").innerText= "Part 1: " + "\nPart 2: ";
+    let array5 = makeInstructionsArray(array3[1]);
+    let part1 = partOne(array4, array5);
+
+    document.getElementById("solutionOutput").innerText= "Part 1: "+ part1 + "\nPart 2: ";
 }
