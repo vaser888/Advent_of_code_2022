@@ -110,6 +110,25 @@ function main(data){
       return finalString;
     }
 
+    function partTwo(startStack, instructionList) {
+      for (i = 0; i <instructionList.length; i++){
+        let move = instructionList[i][0];
+        let from = instructionList[i][1] - 1;
+        let to = instructionList[i][2] - 1;
+        let snip = []
+        snip = startStack[from].splice(-move);
+
+        for (j = 0; j <snip.length; j++){
+          startStack[to].push(snip[j]);
+        }
+      }
+      var finalString = "";
+      for (i = 0; i < startStack.length; i++){
+        let letter = startStack[i].pop();
+        finalString = finalString + letter;
+      }
+    return finalString;
+    }
 
     let array1 = separateLines(data);
     let array2 = splitArray(array1, "")
@@ -117,6 +136,13 @@ function main(data){
     let array4 = makeUsableStartStackArray(array3[0]);
     let array5 = makeInstructionsArray(array3[1]);
     let part1 = partOne(array4, array5);
+ 
+    let array1v2 = separateLines(data);
+    let array2v2 = splitArray(array1v2, "")
+    let array3v2  = separateStartStackFromInstructions(array2v2);
+    let array4v2 = makeUsableStartStackArray(array3v2[0]);
+    let array5v2 = makeInstructionsArray(array3v2[1]);
+    let part2 = partTwo(array4v2, array5v2);
 
-    document.getElementById("solutionOutput").innerText= "Part 1: "+ part1 + "\nPart 2: ";
+    document.getElementById("solutionOutput").innerText= "Part 1: "+ part1 + "\nPart 2: " + part2;
 }
